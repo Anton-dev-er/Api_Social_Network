@@ -13,15 +13,21 @@ class Post(models.Model):
         return self.title
 
 
-class Liked(models.Model):
+class LikedList(models.Model):
     user = models.OneToOneField(AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.user.email
+
+
+class LikedItem(models.Model):
+    liked_list = models.ForeignKey(LikedList, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
 
     is_liked = models.BooleanField(default=True)
 
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now=True)
 
-
-class LikedItem(models.Model):
-    liked_list = models.ForeignKey(Liked, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    def __str__(self):
+        return f"{self.liked_list} | {self.post.title}"

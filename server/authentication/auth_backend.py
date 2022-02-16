@@ -10,11 +10,12 @@ from .models import User
 
 
 class AuthBackend(authentication.BaseAuthentication):
+
     def authenticate(self, request, token=None):
         try:
             auth_header = request.headers['Token'].split(' ')
         except:
-            raise exceptions.AuthenticationFailed('Not found Token in header')
+            return None
 
         if not auth_header or auth_header[0].lower() != 'barrer':
             raise exceptions.AuthenticationFailed('Need to add "Barrer" before token value')

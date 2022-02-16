@@ -1,15 +1,7 @@
-import jwt
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 
-from config import settings
 from .models import User
-
-
-class UsersSer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = '__all__'
 
 
 class RegSerializer(serializers.ModelSerializer):
@@ -47,7 +39,5 @@ class LoginSerializer(serializers.Serializer):
         if not user.is_active:
             raise serializers.ValidationError('Is not active')
 
-        return {
-            'email': user.email,
-            'token': user.token
-        }
+        data["token"] = user.token
+        return data

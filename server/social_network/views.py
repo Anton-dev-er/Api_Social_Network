@@ -1,3 +1,60 @@
-from django.shortcuts import render
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
 
-# Create your views here.
+from django.shortcuts import get_object_or_404
+
+from .models import Post, LikedList, LikedItem
+from .serializers import PostSerializer, LikePostSerializer, UnLikePostSerializer
+
+
+class PostView(APIView):
+    serializer_class = PostSerializer
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class LikePostView(APIView):
+    # permission_classes = [AllowAny]
+    serializer_class = LikePostSerializer
+
+    def post(self, request):
+        liked_list = request.data.get('liked_list')
+        post = request.data.get('post')
+        data = {
+            'liked_list': liked_list,
+            'post': post,
+        }
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class UnLikePostView(APIView):
+    # permission_classes = [AllowAny]
+    serializer_class = UnLikePostSerializer
+
+    def post(self, request):
+        liked_list = request.data.get('liked_list')
+        post = request.data.get('post')
+        data = {
+            'liked_list': liked_list,
+            'post': post,
+        }
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+
