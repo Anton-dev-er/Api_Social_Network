@@ -1,3 +1,4 @@
+from django.utils import timezone
 from rest_framework import status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -5,9 +6,6 @@ from rest_framework.views import APIView
 
 from server.authentication.models import User
 from server.authentication.serializers import RegSerializer, LoginSerializer
-
-from django.utils import timezone
-
 from server.social_network.models import LikedList
 
 
@@ -53,5 +51,3 @@ class LoginAPIView(APIView):
         user.save()
 
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-

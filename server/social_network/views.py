@@ -8,7 +8,6 @@ from .serializers import PostSerializer, LikePostSerializer, UnLikePostSerialize
 
 class PostView(APIView):
     serializer_class = PostSerializer
-    permission_classes = [AllowAny]
 
     def post(self, request):
         serializer = self.serializer_class(data=request.data, context={'request': request})
@@ -19,7 +18,6 @@ class PostView(APIView):
 
 
 class LikePostView(APIView):
-    # permission_classes = [AllowAny]
     serializer_class = LikePostSerializer
 
     def post(self, request):
@@ -37,7 +35,6 @@ class LikePostView(APIView):
 
 
 class UnLikePostView(APIView):
-    # permission_classes = [AllowAny]
     serializer_class = UnLikePostSerializer
 
     def post(self, request):

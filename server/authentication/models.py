@@ -1,12 +1,10 @@
+from datetime import datetime, timedelta
+
+import jwt
+from django.conf import settings
 from django.contrib.auth.models import (AbstractBaseUser, BaseUserManager)
 from django.db import models
 from django.utils import timezone
-
-import jwt
-
-from datetime import datetime, timedelta
-
-from django.conf import settings
 
 
 class UserManager(BaseUserManager):
@@ -55,9 +53,6 @@ class User(AbstractBaseUser):
     def _generate_jwt_token(self):
         token_expires = timedelta(days=settings.TOKEN_EXPIRE_DAYS)
         expire = datetime.utcnow() + token_expires
-
-        print("current", datetime.utcnow())
-        print("expire", expire)
 
         token = jwt.encode({
             'id': self.pk,
