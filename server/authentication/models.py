@@ -56,6 +56,9 @@ class User(AbstractBaseUser):
         token_expires = timedelta(days=settings.TOKEN_EXPIRE_DAYS)
         expire = datetime.utcnow() + token_expires
 
+        print("current", datetime.utcnow())
+        print("expire", expire)
+
         token = jwt.encode({
             'id': self.pk,
             'exp': expire,

@@ -23,7 +23,6 @@ class RegistrationAPIView(APIView):
             'password': password,
         }
 
-
         serializer = self.serializer_class(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

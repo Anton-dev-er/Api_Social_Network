@@ -3,10 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from django.shortcuts import get_object_or_404
-
-from .models import Post, LikedList, LikedItem
-from .serializers import PostSerializer, LikePostSerializer, UnLikePostSerializer
+from .serializers import PostSerializer, LikePostSerializer, UnLikePostSerializer, CountLikedPost
 
 
 class PostView(APIView):
@@ -55,6 +52,26 @@ class UnLikePostView(APIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class CountLikedPostsView(APIView):
+    serializer_class = CountLikedPost
+
+    def get(self, request):
+        date_from = self.request.query_params.get('date_from')
+        date_to = self.request.query_params.get('date_to')
+
+        data = {
+            "date_from": date_from,
+            "date_to": date_to
+        }
+
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 
 
 
