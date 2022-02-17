@@ -37,9 +37,9 @@ class AuthBackend(authentication.BaseAuthentication):
 
         try:
             user = User.objects.get(id=payload['id'])
+            user.last_request = datetime.utcnow()
+            user.save()
         except User.DoesNotExist:
             raise exceptions.AuthenticationFailed('No user matching this token was found.')
-
-        print(user, token)
 
         return user, None
